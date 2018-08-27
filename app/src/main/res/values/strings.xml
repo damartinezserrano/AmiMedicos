@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">AmiMedicos</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="google_play_services_key">AIzaSyBYYLPA1JrY4XVhMFt9EUL6ZxAQ5gS4ngs</string>
+
+    <!-- Login UI Texts -->
+    <string name="Cedula">Cédula</string>
+    <string name="Ingresar">Ingresar</string>
+
+    <!-- servicios asignados UI Texts -->
+    <string name="serviciosasignados">Servicios Asignados</string>
+    <string name="nombrec">Nombre Cliente</string>
+    <string name="numcel">320 569 89 56</string>
+    <string name="noservicios">Usted no tiene servicios asignados</string>
+
+</resources>

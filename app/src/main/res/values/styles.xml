@@ -1,0 +1,35 @@
+<resources>
+
+    <style name="MainAppThemeWithNoBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="SplashScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
+    <style name="Widget.Design.TextInputLayout.CustomRedField" >
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:background">@drawable/rectangulo_rojo_claro</item>
+    </style>
+
+    <style name="CustomWhiteButton" >
+        <item name="android:background">@drawable/rectangulo_blanco</item>
+    </style>
+
+    <style name="CuadradoRedondeadoRojo" >
+        <item name="android:background">@drawable/cuadrado_bordes_redondos</item>
+    </style>
+</resources>
