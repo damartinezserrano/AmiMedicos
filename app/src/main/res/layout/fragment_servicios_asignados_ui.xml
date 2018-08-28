@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.marti.amimedicos.ui.ServiciosAsignadosUI"
     android:orientation="vertical"
-    android:background="@color/somdras1"
+    android:background="@color/lightSilver"
     android:clickable="true"
     android:focusable="true">
 
@@ -33,8 +33,10 @@
         <ImageView
             android:layout_width="@dimen/margin30dp"
             android:layout_height="@dimen/margin30dp"
-            android:background="@drawable/icono_contacto"
+            android:background="@drawable/icono_puerta"
             android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/margin5dp"
+            android:layout_marginTop="@dimen/margin5dp"
             />
 
         </RelativeLayout>
@@ -110,6 +112,7 @@
 
 
             <Button
+                android:id="@+id/cuadrado"
                 android:layout_width="@dimen/margin50dp"
                 android:layout_height="@dimen/margin50dp"
                 style="@style/CuadradoRedondeadoRojo"

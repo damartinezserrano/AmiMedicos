@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/margin20dp"
+    android:paddingEnd="@dimen/margin20dp"
+    android:paddingTop="@dimen/margin20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tienes un Servicio Asignado"
+        android:textSize="@dimen/mediumtitleSize"
+        android:textColor="@color/black"
+        android:textAlignment="center"/>
+
+</LinearLayout>

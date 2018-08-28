@@ -5,8 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="darkGreenColor">#00843f</color>
     <color name="darkSilver">#4d4d4d</color>
-    <color name="lightSilver">#999999</color>
-    <color name="lightSilverOpacity">#10999999</color>
     <color name="white">#ffffff</color>
     <color name="whiteOpacity">#73ffffff</color>
     <color name="redOpacity">#80d2112f</color>
@@ -19,5 +17,8 @@
     <color name="somdras1">#c4c4c4</color> <!-- cuadros como mi ubicacion -->
     <color name="somdras2">#918c8d</color> <!-- fields como tel y ciudad en form info -->
     <color name="amarillo">#f8f458</color>
+    <color name="lightSilver">#F2F2F2</color>
+    <color name="silver">#B3B3B3</color>
+
 
 </resources>

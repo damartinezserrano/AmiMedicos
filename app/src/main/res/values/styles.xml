@@ -32,4 +32,12 @@
     <style name="CuadradoRedondeadoRojo" >
         <item name="android:background">@drawable/cuadrado_bordes_redondos</item>
     </style>
+
+    <style name="CuadradoRedondeadoAmarillo" >
+        <item name="android:background">@drawable/cuadrado_amarillo</item>
+    </style>
+
+    <style name="CuadradoRedondeadoVerde" >
+        <item name="android:background">@drawable/cuadrado_verde</item>
+    </style>
 </resources>

@@ -2,14 +2,17 @@ package com.example.marti.amimedicos.ui;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.marti.amimedicos.R;
+import com.example.marti.amimedicos.interfaces.notification.NotificationM;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +21,7 @@ public class ServiciosAsignadosUI extends Fragment {
 
     RelativeLayout relativeLayoutservicios;
     TextView textViewnoservice;
+    Button cuadradoBtn;
 
     public ServiciosAsignadosUI() {
         // Required empty public constructor
@@ -37,6 +41,7 @@ public class ServiciosAsignadosUI extends Fragment {
 
         relativeLayoutservicios = view.findViewById(R.id.servicios);
         textViewnoservice = view.findViewById(R.id.noservicio);
+        cuadradoBtn = view.findViewById(R.id.cuadrado);
 
         if(LogInUI.noservice==1){
           textViewnoservice.setVisibility(View.VISIBLE);
@@ -47,6 +52,21 @@ public class ServiciosAsignadosUI extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        ((NotificationM)getActivity()).localNotification();
+
+
+        cuadradoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((NotificationM)getActivity()).popupInternalNotification();
+            }
+        });
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
 }
