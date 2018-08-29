@@ -4,6 +4,7 @@ package com.example.marti.amimedicos.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class ServiciosAsignadosUI extends Fragment {
     RelativeLayout relativeLayoutservicios;
     TextView textViewnoservice;
     Button cuadradoBtn;
+    CardView cardView;
 
     public ServiciosAsignadosUI() {
         // Required empty public constructor
@@ -42,6 +44,7 @@ public class ServiciosAsignadosUI extends Fragment {
         relativeLayoutservicios = view.findViewById(R.id.servicios);
         textViewnoservice = view.findViewById(R.id.noservicio);
         cuadradoBtn = view.findViewById(R.id.cuadrado);
+        cardView = view.findViewById(R.id.cardservice);
 
         if(LogInUI.noservice==1){
           textViewnoservice.setVisibility(View.VISIBLE);
@@ -66,6 +69,13 @@ public class ServiciosAsignadosUI extends Fragment {
             }
         });
 
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fg = DetalleServicioAsignado.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
+            }
+        });
         super.onViewCreated(view, savedInstanceState);
     }
 
