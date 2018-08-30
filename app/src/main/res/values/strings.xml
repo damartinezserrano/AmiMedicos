@@ -15,4 +15,19 @@
     <string name="numcel">320 569 89 56</string>
     <string name="noservicios">Usted no tiene servicios asignados</string>
 
+    <!-- Mapa UI Texts -->
+    <string name="llegada">Llegaste al punto de servico</string>
+
+    <!-- servicio actual UI Texts -->
+    <string name="servicioactual">Servicio Actual</string>
+    <string name="nombrecliente">Nombre Cliente</string>
+    <string name="urgencia">Urgencia</string>
+    <string name="finalizar">Finalizar Servicio</string>
+
+    <!-- observaciones UI Texts -->
+    <string name="concuerdas">¿Concuerdas con el Triage asignado?</string>
+    <string name="obs">Observaciones</string>
+    <string name="enviar">Enviar</string>
+
+
 </resources>

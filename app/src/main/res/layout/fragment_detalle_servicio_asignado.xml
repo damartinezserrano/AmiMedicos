@@ -4,7 +4,10 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.marti.amimedicos.ui.DetalleServicioAsignado"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -31,6 +34,35 @@
             android:layout_height="wrap_content"
 
             >
+
+            <LinearLayout
+                android:id="@+id/avisollegada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                style="@style/CuadradoRedondeadoVerde"
+                android:paddingTop="@dimen/margin50dp"
+                android:paddingBottom="@dimen/margin50dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/llegada"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/smallWordSize"
+                    android:textAlignment="center"
+                    android:layout_marginStart="@dimen/margin20dp"
+                    android:layout_marginEnd="@dimen/margin20dp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icono_ambulancia"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
 
         <android.support.design.widget.NavigationView
             android:id="@+id/nv"
@@ -110,17 +142,22 @@
                         />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true">
-                    <Button
+                        android:id="@+id/inicio"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
-                        android:text="Inicio"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:background="@color/darkGreenColor"
+                        android:paddingStart="@dimen/margin5dp"
+                        android:paddingEnd="@dimen/margin5dp"
+                        >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Inicio"
                         android:textColor="@color/white"
-                        android:layout_gravity="end"/>
+                        android:drawableStart="@drawable/arrow_up_icon"
+                        android:layout_gravity="center_vertical"/>
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -133,6 +170,7 @@
                     android:layout_gravity="top|end">
 
                     <Button
+                        android:id="@+id/reportar"
                         android:layout_width="100dp"
                         android:layout_height="match_parent"
                         android:text="Reportar Llegada"

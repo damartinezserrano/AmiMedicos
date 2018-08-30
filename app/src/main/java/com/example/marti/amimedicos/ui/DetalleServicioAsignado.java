@@ -2,13 +2,18 @@ package com.example.marti.amimedicos.ui;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.marti.amimedicos.R;
+import com.example.marti.amimedicos.interfaces.notification.NotificationM;
 import com.example.marti.amimedicos.settings.map.DownloadDirectionsMapData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,7 +29,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallback {
 
     GoogleMap map=null;
-
+    Button reportar;
+    LinearLayout inicio, avisoLlegada;
+    Boolean servicioIniciado=false;
 
     public DetalleServicioAsignado() {
         // Required empty public constructor
@@ -42,10 +49,50 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_servicio_asignado, container, false);
 
+        inicio = view.findViewById(R.id.inicio);
+        reportar = view.findViewById(R.id.reportar);
+        avisoLlegada = view.findViewById(R.id.avisollegada);
+
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        inicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                reportar.setBackgroundColor(getResources().getColor(R.color.darkGreenColor));
+                inicio.setVisibility(View.INVISIBLE);
+                servicioIniciado=true;
+            }
+        });
+
+        reportar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(servicioIniciado){
+                    avisoLlegada.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(),"webs : el médico ha llegado a su destino",Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+        avisoLlegada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Fragment fg = ServicioActualUI.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
+
+            }
+        });
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override

@@ -1,0 +1,128 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.marti.amimedicos.ui.ObservacionesServicio"
+    android:orientation="vertical"
+    android:background="@color/silver"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:orientation="vertical">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/servicioactual"
+            android:textColor="@color/white"
+            android:textSize="@dimen/smallWordSize"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/margin20dp"
+            android:layout_marginTop="@dimen/margin20dp"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/concuerdas"
+            android:textAlignment="center"
+            android:textSize="@dimen/smallWordSize"
+            android:layout_marginTop="@dimen/margin30dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/margin10dp">
+
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/boton_si"
+                android:layout_marginEnd="@dimen/margin15dp"/>
+
+            <ImageButton
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/boton_no"
+                android:layout_marginStart="@dimen/margin15dp"/>
+
+
+        </LinearLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/identificacionWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            style="@style/CustomWhiteButton"
+            app:errorEnabled="true"
+            app:hintEnabled="false"
+            android:layout_marginTop="@dimen/margin10dp"
+            android:layout_marginStart="@dimen/margin30dp"
+            android:layout_marginEnd="@dimen/margin30dp"
+            >
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/identificacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/obs"
+                android:textColorHint="@color/black"
+                android:textSize="@dimen/superSmallWordSize"
+                android:background="@null"
+                android:drawableStart="@drawable/icono_usuario"
+                android:drawablePadding="@dimen/margin5dp"
+                android:paddingStart="@dimen/margin5dp"
+                android:paddingEnd="@dimen/margin5dp"
+                android:textColor="@color/black"
+                android:gravity="top"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin15dp"
+            style="@style/CuadradoRedondeadoRojo"
+            android:text="@string/enviar"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:layout_marginStart="@dimen/margin30dp"
+            android:layout_marginEnd="@dimen/margin30dp"/>
+
+
+    </LinearLayout>
+
+      </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
