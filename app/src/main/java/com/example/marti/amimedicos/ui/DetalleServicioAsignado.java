@@ -10,10 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.marti.amimedicos.R;
+import com.example.marti.amimedicos.estructura.DetalleServicio;
+import com.example.marti.amimedicos.estructura.FinalizarServicioBody;
+import com.example.marti.amimedicos.estructura.Identificacion;
+import com.example.marti.amimedicos.estructura.ReportarLlegadaBody;
 import com.example.marti.amimedicos.interfaces.notification.NotificationM;
+import com.example.marti.amimedicos.settings.Constant;
 import com.example.marti.amimedicos.settings.map.DownloadDirectionsMapData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +36,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +54,16 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
     Button reportar;
     LinearLayout inicio, avisoLlegada;
     Boolean servicioIniciado=false;
+
+    TextView nombreCli, telCli, infoAdicional;
+
+    GsonBuilder gsonBuilder;
+    Gson gson;
+
+    RequestQueue requestQueue;
+
+    ReportarLlegadaBody reportarLlegadaBody;
+    FinalizarServicioBody finalizarServicioBody;
 
     public DetalleServicioAsignado() {
         // Required empty public constructor
@@ -52,6 +84,9 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
         inicio = view.findViewById(R.id.inicio);
         reportar = view.findViewById(R.id.reportar);
         avisoLlegada = view.findViewById(R.id.avisollegada);
+        infoAdicional = view.findViewById(R.id.infoadicional);
+        nombreCli = view.findViewById(R.id.nombrecli);
+        telCli = view.findViewById(R.id.telefono);
 
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
@@ -77,6 +112,8 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
 
                 if(servicioIniciado){
                     avisoLlegada.setVisibility(View.VISIBLE);
+                    putReporteLlegada(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_REGISTRAR_HORA_LLEGADA,"3282500");
+                    putFinalizarServicio(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_FINALIZAR_SERVICIO,"3282500");
                     Toast.makeText(getActivity(),"webs : el médico ha llegado a su destino",Toast.LENGTH_SHORT);
                 }
             }
@@ -92,8 +129,12 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
             }
         });
 
+        getDetalleServicios(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_DETALLE_SERVICIO + Constant.SLASH + "3261616");
+
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -140,5 +181,187 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
 
 
         return url;
+    }
+
+    public RequestQueue getRequestQueue() {
+        // lazy initialize the request queue, the queue instance will be
+        // created when it is accessed for the first time
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getActivity());
+        }
+
+        return requestQueue;
+    }
+
+    public void getDetalleServicios(String UrlQuest) {
+
+        requestQueue = getRequestQueue();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlQuest,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("PerfilUI :", "success");
+                        parseSevicioResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { //errores de peticion
+                Log.i("PerfilUI :", "error");
+                //parseLogInError(error);
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError { //autorizamos basic
+                Map<String, String> headers = new HashMap<>();
+                String auth = getResources().getString(R.string.auth);
+                headers.put("Authorization",auth);
+                Log.i("PerfilUIToken ", headers.toString());
+                return headers;
+            }
+
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void parseSevicioResponse(String response) {
+
+        Gson gson3 = new Gson();
+        DetalleServicio detalleServicio = new DetalleServicio();
+        detalleServicio = gson3.fromJson(response,DetalleServicio.class);
+
+        if(detalleServicio.getDetalle()!=null){
+
+            String primerNombre = detalleServicio.getDetalle()[0].getPrimer_nombre();
+            String primerApellido = detalleServicio.getDetalle()[0].getPrimer_apellido();
+            String setNombre = "Cliente : "+primerNombre+" "+primerApellido;
+            nombreCli.setText(setNombre);
+
+            String telefCliente = detalleServicio.getDetalle()[0].getTelefono_servicio();
+            telCli.setText(telefCliente);
+
+            String adicional = detalleServicio.getDetalle()[0].getDiagnostico();
+            infoAdicional.setText(adicional);
+        }
+
+    }
+
+    public void putReporteLlegada(String URL, String id) {
+
+
+
+        requestQueue = getRequestQueue();
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, URL, putLlegadaBodyJSON(id), //hacemos la peticion post
+                response -> {
+
+                    Log.i("LogInFragment", "Se ha realizado el user post con exito");
+                   // parseLogInResponse(response);
+
+                }, error -> {
+
+           // parseLogInError(error);
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError { //autorizamos basic
+                Map<String, String> headers = new HashMap<>();
+                String auth = getResources().getString(R.string.auth);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+
+        };
+
+        requestQueue.add(request);
+    }
+
+
+    public JSONObject putLlegadaBodyJSON(String id) { //construimos el json
+        //primero json device
+        String loginBody="";
+        JSONObject jsonObject=null;
+
+        reportarLlegadaBody = new ReportarLlegadaBody();
+        reportarLlegadaBody.setConsec_movserv(id); //3282500
+
+
+        gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+
+        loginBody = gson.toJson(reportarLlegadaBody);
+        Log.i("loginRbody",loginBody);
+
+        try {
+            jsonObject = new JSONObject(loginBody);
+            Log.i("jsonObject",jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+    public void putFinalizarServicio(String URL, String id) {
+
+
+
+        requestQueue = getRequestQueue();
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, URL, putFinalizarBodyJSON(id), //hacemos la peticion post
+                response -> {
+
+                    Log.i("LogInFragment", "Se ha realizado el user post con exito");
+
+
+                }, error -> {
+
+            // parseLogInError(error);
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError { //autorizamos basic
+                Map<String, String> headers = new HashMap<>();
+                String auth = getResources().getString(R.string.auth);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+
+        };
+
+        requestQueue.add(request);
+    }
+
+    public JSONObject putFinalizarBodyJSON(String id) { //construimos el json
+        //primero json device
+        String loginBody="";
+        JSONObject jsonObject=null;
+
+        finalizarServicioBody = new FinalizarServicioBody();
+        finalizarServicioBody.setConsec_movserv(id); //3282500
+        finalizarServicioBody.setCoordenada_x("1"); //1
+        finalizarServicioBody.setCoordenada_y("2"); //2
+
+
+
+        gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+
+        loginBody = gson.toJson(finalizarServicioBody);
+        Log.i("loginRbody",loginBody);
+
+        try {
+            jsonObject = new JSONObject(loginBody);
+            Log.i("jsonObject",jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 }

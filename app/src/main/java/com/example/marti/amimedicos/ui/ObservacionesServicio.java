@@ -84,21 +84,24 @@ public class ObservacionesServicio extends Fragment {
                if(concordancia==null || observaciones.equals("")){
 
                   if(concordancia==null) {
+                      LayoutInflater inflater = LayoutInflater.from(getActivity());
+                      View dialogView = inflater.inflate(R.layout.concordancia_error_layout, null);
                       new AlertDialog.Builder(getContext())
                               .setTitle("Elegir concordancia")
+                              .setView(dialogView)
                               .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                                   @Override
                                   public void onClick(DialogInterface dialogInterface, int i) {
 
                                   }
                               })
-                              .setMessage("Debe elgir Si o No para continuar")
+                              //.setMessage("Debe elgir Si o No para continuar")
                               .show();
                   }
 
                   if(observaciones.equals("")){
                       textInputEditTextObs.requestFocus();
-                      Drawable drError = getResources().getDrawable(R.drawable.if_sign_error);
+                      Drawable drError = getResources().getDrawable(R.drawable.cancel);
                       drError.setBounds(new Rect(0, 0, 20, 20));
                       textInputEditTextObs.setError("Debe escribir una observación",drError);
                   }

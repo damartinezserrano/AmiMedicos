@@ -1,10 +1,13 @@
 package com.example.marti.amimedicos.ui;
 
 
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +15,26 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.marti.amimedicos.R;
+import com.example.marti.amimedicos.estructura.ListaServiciosPendiente;
 import com.example.marti.amimedicos.interfaces.notification.NotificationM;
+import com.example.marti.amimedicos.settings.Constant;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,9 +42,14 @@ import com.example.marti.amimedicos.interfaces.notification.NotificationM;
 public class ServiciosAsignadosUI extends Fragment {
 
     RelativeLayout relativeLayoutservicios;
-    TextView textViewnoservice;
+    TextView textViewnoservice,nombrecli,telcli;
     Button cuadradoBtn;
     CardView cardView;
+
+    GsonBuilder gsonBuilder;
+    Gson gson;
+
+    RequestQueue requestQueue;
 
     public ServiciosAsignadosUI() {
         // Required empty public constructor
@@ -45,14 +71,18 @@ public class ServiciosAsignadosUI extends Fragment {
         textViewnoservice = view.findViewById(R.id.noservicio);
         cuadradoBtn = view.findViewById(R.id.cuadrado);
         cardView = view.findViewById(R.id.cardservice);
+        nombrecli = view.findViewById(R.id.nombrecli);
+        telcli = view.findViewById(R.id.telcli);
 
-        if(LogInUI.noservice==1){
+       /* if(LogInUI.noservice==1){
           textViewnoservice.setVisibility(View.VISIBLE);
           relativeLayoutservicios.setVisibility(View.GONE);
         }else{
             textViewnoservice.setVisibility(View.GONE);
             relativeLayoutservicios.setVisibility(View.VISIBLE);
-        }
+        }*/
+
+       getServiciosPendientes(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_LISTA_SERVICIO_PENDIENTE + Constant.SLASH + "1140829076");
 
         return view;
     }
@@ -78,5 +108,105 @@ public class ServiciosAsignadosUI extends Fragment {
         });
         super.onViewCreated(view, savedInstanceState);
     }
+
+    public RequestQueue getRequestQueue() {
+        // lazy initialize the request queue, the queue instance will be
+        // created when it is accessed for the first time
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getActivity());
+        }
+
+        return requestQueue;
+    }
+
+    public void getServiciosPendientes(String UrlQuest) {
+
+        requestQueue = getRequestQueue();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, UrlQuest,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i("PerfilUI :", "success");
+                        parseSevicioResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { //errores de peticion
+                Log.i("PerfilUI :", "error");
+                parseLogInError(error);
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError { //autorizamos basic
+                Map<String, String> headers = new HashMap<>();
+                String auth = getResources().getString(R.string.auth);
+                headers.put("Authorization",auth);
+                Log.i("PerfilUIToken ", headers.toString());
+                return headers;
+            }
+
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void parseSevicioResponse(String response) {
+
+        Gson gson3 = new Gson();
+        ListaServiciosPendiente listaServiciosPendiente = new ListaServiciosPendiente();
+        listaServiciosPendiente = gson3.fromJson(response,ListaServiciosPendiente.class);
+
+            if (listaServiciosPendiente.getServicio()!=null) {
+
+                textViewnoservice.setVisibility(View.GONE);
+                relativeLayoutservicios.setVisibility(View.VISIBLE);
+
+                String setNombre = listaServiciosPendiente.getServicio().getPrimer_nombre() + " " + listaServiciosPendiente.getServicio().getPrimer_apellido();
+                nombrecli.setText(setNombre);
+
+
+                String setTel = listaServiciosPendiente.getServicio().getTelefono_servicio();
+                telcli.setText(setTel);
+
+                String cColor = listaServiciosPendiente.getServicio().getTipo_servicio_id_tiposerv();
+                if(cColor.equals("1")){
+                    cuadradoBtn.setBackground(getResources().getDrawable(R.drawable.cuadrado_bordes_redondos));
+                }else{
+                    if(cColor.equals("2")){
+                        cuadradoBtn.setBackground(getResources().getDrawable(R.drawable.cuadrado_amarillo));
+                    } else{
+                        if(cColor.equals("3")){
+                            cuadradoBtn.setBackground(getResources().getDrawable(R.drawable.cuadrado_verde));
+                        }
+                    }
+                }
+            } else {
+                textViewnoservice.setVisibility(View.VISIBLE);
+                relativeLayoutservicios.setVisibility(View.GONE);
+            }
+
+
+    }
+
+    public void parseLogInError(VolleyError error) {
+
+        try {
+            String responseBody = new String(error.networkResponse.data, "utf-8");
+            JSONObject data = new JSONObject(responseBody);
+            boolean estado = data.getBoolean("estado");
+            String mensaje = data.getString("mensaje");
+            Log.i("LogInFragment", "Ha ocurrido un error en el Login : "+estado+" , "+mensaje);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

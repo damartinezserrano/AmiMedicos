@@ -93,12 +93,14 @@
                     android:layout_marginBottom="@dimen/margin5dp">
 
                     <TextView
+                    android:id="@+id/nombrecli"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:text="Cliente: Camila Restrepo"/>
 
                     <TextView
+                        android:id="@+id/telefono"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="320 569 89 56"
@@ -143,6 +145,7 @@
                     >
 
                     <TextView
+                        android:id="@+id/infoadicional"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="PASOS Y MAS"
