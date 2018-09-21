@@ -40,4 +40,9 @@
     <style name="CuadradoRedondeadoVerde" >
         <item name="android:background">@drawable/cuadrado_verde</item>
     </style>
+
+    <style name="CuadradoRojoBordesBlancos" >
+        <item name="android:background">@drawable/campos_rojos_top_bar</item>
+    </style>
+
 </resources>

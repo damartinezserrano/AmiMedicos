@@ -121,7 +121,8 @@
             android:layout_width="@dimen/margin50dp"
             android:layout_height="@dimen/margin50dp"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/margin15dp"/>
 
     </RelativeLayout>
 

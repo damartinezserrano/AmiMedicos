@@ -181,6 +181,7 @@ public class ServiciosAsignadosUI extends Fragment {
                         }
                     }
                 }
+                Constant.cod_detalle_serv=listaServiciosPendiente.getServicio().getConsec_movserv();
             } else {
                 textViewnoservice.setVisibility(View.VISIBLE);
                 relativeLayoutservicios.setVisibility(View.GONE);

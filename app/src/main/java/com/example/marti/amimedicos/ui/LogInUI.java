@@ -42,9 +42,9 @@ import java.util.Map;
 public class LogInUI extends Fragment {
 
     TextInputLayout inputLayoutIden;
-    TextInputEditText idenTView;
+    TextInputEditText idenTView,contrasenaTView;
     Button loginBtn;
-    String campoIden;
+    String campoIden, campoContra;
 
     static int noservice=0;
 
@@ -72,6 +72,7 @@ public class LogInUI extends Fragment {
         View view = inflater.inflate(R.layout.fragment_log_in_ui, container, false);
 
         idenTView = view.findViewById(R.id.identificacion);
+        contrasenaTView = view.findViewById(R.id.contrasena);
         Drawable drIden = getResources().getDrawable(R.drawable.icono_usuario2);
         drIden.setBounds(new Rect(0, 0, 20, 20));
         idenTView.setCompoundDrawables(drIden,null,null,null);
@@ -81,20 +82,29 @@ public class LogInUI extends Fragment {
             @Override
             public void onClick(View view) {
                 campoIden=idenTView.getText().toString();
-                if(!campoIden.equals("")){
+                campoContra=contrasenaTView.getText().toString();
+                if(!campoIden.equals("")&&!campoContra.equals("")){
                     Log.i("campos","Escritos");
 
-                    if(campoIden.equals("no")){noservice=1;}else{noservice=0;}
+                    //if(campoIden.equals("no")){noservice=1;}else{noservice=0;}
 
                     Date currentTime = Calendar.getInstance().getTime();
                     String successMessage = "Ingreso Exitoso.\n"+currentTime.toString();
                     Toast.makeText(getActivity(),successMessage,Toast.LENGTH_SHORT).show();
-                    postLogin(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_GENERAL + Constant.ENDPOINT_LOGIN, campoIden);
+                    postLogin(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_GENERAL + Constant.ENDPOINT_LOGIN, campoIden, campoContra);
                 }else{
-                    idenTView.requestFocus();
-                    Drawable drError = getResources().getDrawable(R.drawable.cancel);
-                    drError.setBounds(new Rect(0, 0, 20, 20));
-                    idenTView.setError("Ha ocurrido un error en este campo",drError);
+                    if(campoIden.equals("")) {
+                        idenTView.requestFocus();
+                        Drawable drError = getResources().getDrawable(R.drawable.cancel);
+                        drError.setBounds(new Rect(0, 0, 20, 20));
+                        idenTView.setError("Este campo no puede estar vacío", drError);
+                    }
+                    if(campoContra.equals("")) {
+                        contrasenaTView.requestFocus();
+                        Drawable drError = getResources().getDrawable(R.drawable.cancel);
+                        drError.setBounds(new Rect(0, 0, 20, 20));
+                        contrasenaTView.setError("Este campo no puede estar vacío", drError);
+                    }
                 }
             }
         });
@@ -113,14 +123,14 @@ public class LogInUI extends Fragment {
     }
 
 
-    public void postLogin(String URL, String id) {
+    public void postLogin(String URL, String id, String contra) {
 
 
 
         requestQueue = getRequestQueue();
 
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, loginBodyJSON(id), //hacemos la peticion post
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, loginBodyJSON(id,contra), //hacemos la peticion post
                 response -> {
 
                     Log.i("LogInFragment", "Se ha realizado el user post con exito");
@@ -145,14 +155,14 @@ public class LogInUI extends Fragment {
         requestQueue.add(request);
     }
 
-    public JSONObject loginBodyJSON(String id) { //construimos el json
+    public JSONObject loginBodyJSON(String id, String contra) { //construimos el json
         //primero json device
         String loginBody="";
         JSONObject jsonObject=null;
 
         identificacion = new Identificacion();
         identificacion.setUsuario(id); //72000325
-        identificacion.setContrasena("isabella");
+        identificacion.setContrasena(contra); //isabella
 
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();

@@ -33,4 +33,8 @@ public class Constant {
     public static  String ENDPOINT_FINALIZAR_SERVICIO="/finalizar_servicio";
 
     public static  String ENDPOINT_VALIDAR_TRIAGE="/validar_triage_servicio";
+
+
+
+    public static  String cod_detalle_serv="";
 }

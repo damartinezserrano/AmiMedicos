@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">AmiMedicos</string>
     <string name="auth">Basic QW1pQXBwQWRtaW5pc3RyYWRvcjoqQW1pQWRtaW5BcHAyMDE4Kg==</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -8,6 +11,7 @@
 
     <!-- Login UI Texts -->
     <string name="Cedula">Cédula</string>
+    <string name="Contrasena">Contraseña</string>
     <string name="Ingresar">Ingresar</string>
 
     <!-- servicios asignados UI Texts -->
