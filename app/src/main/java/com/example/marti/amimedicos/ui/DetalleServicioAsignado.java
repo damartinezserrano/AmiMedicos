@@ -1,6 +1,7 @@
 package com.example.marti.amimedicos.ui;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -105,6 +106,9 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
         actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(), drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
 
         SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFrag.getMapAsync(this);
@@ -133,7 +137,7 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
                     drawerLayout.closeDrawer((int) Gravity.LEFT);
                 }
                     avisoLlegada.setVisibility(View.VISIBLE);
-                    putReporteLlegada(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_REGISTRAR_HORA_LLEGADA,"3282500");
+                    putReporteLlegada(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_REGISTRAR_HORA_LLEGADA, Constant.cod_detalle_serv);
                    // putFinalizarServicio(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_FINALIZAR_SERVICIO,"3282500");
                     Toast.makeText(getActivity(),"webs : el médico ha llegado a su destino",Toast.LENGTH_SHORT);
                 //}
@@ -165,6 +169,10 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
         });
 
         getDetalleServicios(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_DETALLE_SERVICIO + Constant.SLASH + Constant.cod_detalle_serv);
+
+        if (!drawerLayout.isDrawerOpen(Gravity.LEFT)) {
+            drawerLayout.openDrawer((int) Gravity.LEFT);
+        }
 
         super.onViewCreated(view, savedInstanceState);
     }

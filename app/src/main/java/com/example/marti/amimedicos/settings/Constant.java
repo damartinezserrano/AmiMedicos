@@ -10,6 +10,8 @@ public class Constant {
 
     public static String ID = "";
 
+    public static  String cod_detalle_serv="";
+
     //domonio
 
     public static String SLASH="/";
@@ -36,5 +38,5 @@ public class Constant {
 
 
 
-    public static  String cod_detalle_serv="";
+
 }

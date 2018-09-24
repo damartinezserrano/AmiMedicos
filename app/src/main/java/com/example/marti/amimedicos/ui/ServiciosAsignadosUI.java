@@ -82,7 +82,7 @@ public class ServiciosAsignadosUI extends Fragment {
             relativeLayoutservicios.setVisibility(View.VISIBLE);
         }*/
 
-       getServiciosPendientes(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_LISTA_SERVICIO_PENDIENTE + Constant.SLASH + "1140829076");
+       getServiciosPendientes(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_LISTA_SERVICIO_PENDIENTE + Constant.SLASH + Constant.ID);
 
         return view;
     }

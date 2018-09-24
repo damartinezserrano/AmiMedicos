@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.marti.amimedicos.R;
+import com.example.marti.amimedicos.estructura.FinalizarServicioBody;
+import com.example.marti.amimedicos.estructura.ValidarTriageBody;
+import com.example.marti.amimedicos.settings.Constant;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +44,13 @@ public class ObservacionesServicio extends Fragment {
     ImageButton sibtn, nobtn;
     TextInputEditText textInputEditTextObs;
     Boolean concordancia = null;
+
+    GsonBuilder gsonBuilder;
+    Gson gson;
+
+    RequestQueue requestQueue;
+
+    ValidarTriageBody validarTriageBody;
 
     public ObservacionesServicio() {
         // Required empty public constructor
@@ -107,6 +131,14 @@ public class ObservacionesServicio extends Fragment {
                   }
 
                }else{
+
+                   if (concordancia){
+                       putValidarTriageo(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_VALIDAR_TRIAGE,"","1",observaciones);
+                   }else{
+                       putValidarTriageo(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_VALIDAR_TRIAGE,"","2",observaciones);
+
+                   }
+
                    Toast.makeText(getActivity(), "Información Enviada",Toast.LENGTH_SHORT).show();
                    Fragment fg = ServiciosAsignadosUI.newInstance();
                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
@@ -117,6 +149,78 @@ public class ObservacionesServicio extends Fragment {
 
 
         super.onViewCreated(view, savedInstanceState);
+    }
+
+
+
+    public RequestQueue getRequestQueue() {
+        // lazy initialize the request queue, the queue instance will be
+        // created when it is accessed for the first time
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(getActivity());
+        }
+
+        return requestQueue;
+    }
+
+    public void putValidarTriageo(String URL, String id, String valid, String observ) {
+
+
+
+        requestQueue = getRequestQueue();
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, URL, putTriageBodyJSON(id,valid,observ), //hacemos la peticion post
+                response -> {
+
+                    Log.i("LogInFragment", "Se ha realizado el user post con exito");
+
+
+                }, error -> {
+
+            // parseLogInError(error);
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError { //autorizamos basic
+                Map<String, String> headers = new HashMap<>();
+                String auth = getResources().getString(R.string.auth);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+
+        };
+
+        requestQueue.add(request);
+    }
+
+    public JSONObject putTriageBodyJSON(String id, String valid, String observ) { //construimos el json
+        //primero json device
+        String loginBody="";
+        JSONObject jsonObject=null;
+
+        validarTriageBody = new ValidarTriageBody();
+        validarTriageBody.setConsec_movserv(id); //3282500
+        validarTriageBody.setValidacion_triage(valid); //1 si , 2 no
+        validarTriageBody.setObservacion_triage(observ);
+
+
+
+        gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+
+        loginBody = gson.toJson(validarTriageBody);
+        Log.i("loginRbody",loginBody);
+
+        try {
+            jsonObject = new JSONObject(loginBody);
+            Log.i("jsonObject",jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 
 }

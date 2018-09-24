@@ -75,7 +75,7 @@ public class ServicioActualUI extends Fragment {
             @Override
             public void onClick(View view) {
 
-                putFinalizarServicio(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_FINALIZAR_SERVICIO,"3282500");
+                putFinalizarServicio(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_FINALIZAR_SERVICIO,Constant.cod_detalle_serv);
                 Fragment fg = ObservacionesServicio.newInstance();
                 getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
                 Toast.makeText(getActivity(),"webs : Medico liberado",Toast.LENGTH_SHORT);

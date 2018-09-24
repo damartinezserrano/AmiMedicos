@@ -77,6 +77,10 @@ public class LogInUI extends Fragment {
         drIden.setBounds(new Rect(0, 0, 20, 20));
         idenTView.setCompoundDrawables(drIden,null,null,null);
 
+        Drawable drContra = getResources().getDrawable(R.drawable.candado);
+        drContra.setBounds(new Rect(0, 0, 20, 20));
+        contrasenaTView.setCompoundDrawables(drContra,null,null,null);
+
         loginBtn=view.findViewById(R.id.ingresar);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,8 +165,8 @@ public class LogInUI extends Fragment {
         JSONObject jsonObject=null;
 
         identificacion = new Identificacion();
-        identificacion.setUsuario(id); //72000325
-        identificacion.setContrasena(contra); //isabella
+        identificacion.setUsuario(id); //72000325  22540125
+        identificacion.setContrasena(contra); //isabella  jannyscaicedoa
 
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
