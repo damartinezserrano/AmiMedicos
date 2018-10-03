@@ -164,7 +164,7 @@ public class ServiciosAsignadosUI extends Fragment {
 
                 String setNombre = listaServiciosPendiente.getServicio().getPrimer_nombre() + " " + listaServiciosPendiente.getServicio().getPrimer_apellido();
                 nombrecli.setText(setNombre);
-
+                Constant.NOMBRE_CLIENTE = setNombre;
 
                 String setTel = listaServiciosPendiente.getServicio().getTelefono_servicio();
                 telcli.setText(setTel);
@@ -172,12 +172,15 @@ public class ServiciosAsignadosUI extends Fragment {
                 String cColor = listaServiciosPendiente.getServicio().getTipo_servicio_id_tiposerv();
                 if(cColor.equals("1")){
                     cuadradoBtn.setBackground(getResources().getDrawable(R.drawable.cuadrado_bordes_redondos));
+                    Constant.CLASIFIC_SERV = "Emergencia";
                 }else{
                     if(cColor.equals("2")){
                         cuadradoBtn.setBackground(getResources().getDrawable(R.drawable.cuadrado_amarillo));
+                        Constant.CLASIFIC_SERV = "Urgencia";
                     } else{
                         if(cColor.equals("3")){
                             cuadradoBtn.setBackground(getResources().getDrawable(R.drawable.cuadrado_verde));
+                            Constant.CLASIFIC_SERV = "Baja Complejidad";
                         }
                     }
                 }
@@ -197,6 +200,11 @@ public class ServiciosAsignadosUI extends Fragment {
             JSONObject data = new JSONObject(responseBody);
             boolean estado = data.getBoolean("estado");
             String mensaje = data.getString("mensaje");
+
+            if(mensaje.equals("Sin resultados.")){
+                textViewnoservice.setVisibility(View.VISIBLE);
+                relativeLayoutservicios.setVisibility(View.GONE);
+            }
             Log.i("LogInFragment", "Ha ocurrido un error en el Login : "+estado+" , "+mensaje);
 
         } catch (UnsupportedEncodingException e) {

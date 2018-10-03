@@ -12,6 +12,13 @@ public class Constant {
 
     public static  String cod_detalle_serv="";
 
+
+    public static String NOMBRE_CLIENTE = "";
+
+
+    public static String CLASIFIC_SERV = "";
+
+
     //domonio
 
     public static String SLASH="/";

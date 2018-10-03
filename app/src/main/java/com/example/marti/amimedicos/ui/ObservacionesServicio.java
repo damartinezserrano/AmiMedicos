@@ -133,9 +133,9 @@ public class ObservacionesServicio extends Fragment {
                }else{
 
                    if (concordancia){
-                       putValidarTriageo(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_VALIDAR_TRIAGE,"","1",observaciones);
+                       putValidarTriageo(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_VALIDAR_TRIAGE,Constant.cod_detalle_serv,"1",observaciones);
                    }else{
-                       putValidarTriageo(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_VALIDAR_TRIAGE,"","2",observaciones);
+                       putValidarTriageo(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_VALIDAR_TRIAGE,Constant.cod_detalle_serv,"2",observaciones);
 
                    }
 

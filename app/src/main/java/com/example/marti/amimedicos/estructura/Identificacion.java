@@ -10,6 +10,8 @@ public class Identificacion {
 
     String contrasena;
 
+    String token_movil;
+
     public Identificacion() {
     }
 
@@ -27,5 +29,13 @@ public class Identificacion {
 
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
+    }
+
+    public String getToken_movil() {
+        return token_movil;
+    }
+
+    public void setToken_movil(String token_movil) {
+        this.token_movil = token_movil;
     }
 }

@@ -151,6 +151,7 @@ public class LogInUI extends Fragment {
                 String auth = getResources().getString(R.string.auth);
                 headers.put("Content-Type", "application/json");
                 headers.put("Authorization", auth);
+                headers.put("token_movil", "123");
                 return headers;
             }
 
@@ -167,6 +168,7 @@ public class LogInUI extends Fragment {
         identificacion = new Identificacion();
         identificacion.setUsuario(id); //72000325  22540125
         identificacion.setContrasena(contra); //isabella  jannyscaicedoa
+        identificacion.setToken_movil("123");
 
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();

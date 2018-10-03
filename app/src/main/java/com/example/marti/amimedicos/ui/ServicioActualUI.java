@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,6 +37,7 @@ import java.util.Map;
 public class ServicioActualUI extends Fragment {
 
     Button finalizar;
+    TextView nombreCli, clasifServ;
 
     GsonBuilder gsonBuilder;
     Gson gson;
@@ -61,6 +63,8 @@ public class ServicioActualUI extends Fragment {
         View view = inflater.inflate(R.layout.fragment_servicio_actual_ui, container, false);
 
         finalizar = view.findViewById(R.id.finalizar);
+        nombreCli = view.findViewById(R.id.nombreCliente);
+        clasifServ = view.findViewById(R.id.clasifServicio);
 
         return view;
     }
@@ -70,6 +74,8 @@ public class ServicioActualUI extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         ((NotificationM)getActivity()).localNotification();
 
+        nombreCli.setText(Constant.NOMBRE_CLIENTE);
+        clasifServ.setText(Constant.CLASIFIC_SERV);
 
         finalizar.setOnClickListener(new View.OnClickListener() {
             @Override
