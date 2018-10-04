@@ -18,6 +18,7 @@ public class Constant {
 
     public static String CLASIFIC_SERV = "";
 
+    public static boolean servicioIniciado=false;
 
     //domonio
 
@@ -42,6 +43,12 @@ public class Constant {
     public static  String ENDPOINT_FINALIZAR_SERVICIO="/finalizar_servicio";
 
     public static  String ENDPOINT_VALIDAR_TRIAGE="/validar_triage_servicio";
+
+    // dominio nativapps
+
+    public static  String HTTP_DOMAIN_DVD="http://35.237.175.163:3000";
+
+    public static  String END_POINT_POSITION="/position";
 
 
 

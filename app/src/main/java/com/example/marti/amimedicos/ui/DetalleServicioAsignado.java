@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.marti.amimedicos.MainActivity;
 import com.example.marti.amimedicos.R;
 import com.example.marti.amimedicos.estructura.DetalleServicio;
 import com.example.marti.amimedicos.estructura.FinalizarServicioBody;
@@ -136,6 +137,7 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
                 if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
                     drawerLayout.closeDrawer((int) Gravity.LEFT);
                 }
+                    Constant.servicioIniciado=false;
                     avisoLlegada.setVisibility(View.VISIBLE);
                     putReporteLlegada(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_REGISTRAR_HORA_LLEGADA, Constant.cod_detalle_serv);
                    // putFinalizarServicio(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_MEDICO + Constant.ENDPOINT_FINALIZAR_SERVICIO,"3282500");
@@ -173,6 +175,9 @@ public class DetalleServicioAsignado extends Fragment implements OnMapReadyCallb
         if (!drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.openDrawer((int) Gravity.LEFT);
         }
+
+        Constant.servicioIniciado=true;
+        ((MainActivity)getActivity()).pedirUbicacion();
 
         super.onViewCreated(view, savedInstanceState);
     }

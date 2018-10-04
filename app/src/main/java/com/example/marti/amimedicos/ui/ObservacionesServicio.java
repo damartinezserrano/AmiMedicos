@@ -173,7 +173,7 @@ public class ObservacionesServicio extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, URL, putTriageBodyJSON(id,valid,observ), //hacemos la peticion post
                 response -> {
 
-                    Log.i("LogInFragment", "Se ha realizado el user post con exito");
+                    Log.i("LogInFragment", "Se ha validado el triage con exito");
 
 
                 }, error -> {
