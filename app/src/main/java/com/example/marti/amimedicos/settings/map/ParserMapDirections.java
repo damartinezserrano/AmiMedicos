@@ -73,7 +73,7 @@ public class ParserMapDirections extends AsyncTask< String,Integer,List<List<Has
                 //
                 polylineOptions.add(position);
                 polylineOptions.width(10);
-                polylineOptions.color(Color.GREEN);
+                polylineOptions.color(Color.RED);
                 mMap.addPolyline(polylineOptions);
             }
             // polylineOptions.addAll(points);

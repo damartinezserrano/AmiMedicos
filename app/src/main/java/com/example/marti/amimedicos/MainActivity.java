@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
     LocationListener ll;
 
     double longitude = 0, latitude = 0;
+    double oldLocationLongitude = 0, oldLocationLatitude = 0;
+    double newLocationLongitude = 0, newLocationLatitude = 0;
+
 
     GsonBuilder gsonBuilder;
     Gson gson;
@@ -85,7 +88,24 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
         ll = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("Location","Changed :"+location.getLatitude());
+                Log.i("Location","Changed :"+location.getLatitude()+" | "+location.getLongitude());
+                if(oldLocationLatitude==0&&oldLocationLongitude==0){
+                    oldLocationLatitude=location.getLatitude();
+                    oldLocationLongitude=location.getLongitude();
+                }else{
+                    if(newLocationLatitude==0&&newLocationLongitude==0){
+                        newLocationLatitude=location.getLatitude();
+                        newLocationLongitude=location.getLongitude();
+                        Log.i("pripos",String.valueOf(meterDistanceBetweenPoints((float)oldLocationLatitude,(float)oldLocationLongitude,(float)newLocationLatitude,(float)newLocationLongitude)));
+                    }else{
+
+                        oldLocationLatitude=newLocationLatitude;
+                        oldLocationLongitude=newLocationLongitude;
+                        newLocationLatitude=location.getLatitude();
+                        newLocationLongitude=location.getLongitude();
+                        Log.i("otrapos",String.valueOf(meterDistanceBetweenPoints((float)oldLocationLatitude,(float)oldLocationLongitude,(float)newLocationLatitude,(float)newLocationLongitude)));
+                    }
+                }
                 if (Constant.servicioIniciado) {
                     Log.i("cod_serv",Constant.cod_detalle_serv);
                     ubicarMedico(location, Constant.HTTP_DOMAIN_DVD + Constant.END_POINT_POSITION + Constant.SLASH + Constant.cod_detalle_serv);
@@ -305,5 +325,40 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
             return;
         }
         lm.requestSingleUpdate(lm.isProviderEnabled(LocationManager.GPS_PROVIDER) ? LocationManager.GPS_PROVIDER : LocationManager.NETWORK_PROVIDER, ll, null);
+    }
+
+    public float getDistance(){
+
+        float[] results = new float[0];
+
+        Location locationA = new Location("point A");
+
+        locationA.setLatitude(oldLocationLatitude);
+        locationA.setLongitude(oldLocationLongitude);
+
+        Location locationB = new Location("point B");
+
+
+        locationB.setLatitude(newLocationLatitude);
+        locationB.setLongitude(newLocationLongitude);
+
+        return locationA.distanceTo(locationB);
+
+    }
+
+    private double meterDistanceBetweenPoints(float lat_a, float lng_a, float lat_b, float lng_b) {
+        float pk = (float) (180.f/Math.PI);
+
+        float a1 = lat_a / pk;
+        float a2 = lng_a / pk;
+        float b1 = lat_b / pk;
+        float b2 = lng_b / pk;
+
+        double t1 = Math.cos(a1) * Math.cos(a2) * Math.cos(b1) * Math.cos(b2);
+        double t2 = Math.cos(a1) * Math.sin(a2) * Math.cos(b1) * Math.sin(b2);
+        double t3 = Math.sin(a1) * Math.sin(b1);
+        double tt = Math.acos(t1 + t2 + t3);
+
+        return 6366000 * tt;
     }
 }
