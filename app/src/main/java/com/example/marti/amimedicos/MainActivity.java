@@ -35,6 +35,7 @@ import com.example.marti.amimedicos.estructura.ValidarTriageBody;
 import com.example.marti.amimedicos.interfaces.notification.NotificationM;
 import com.example.marti.amimedicos.settings.Constant;
 import com.example.marti.amimedicos.ui.LogInUI;
+import com.example.marti.amimedicos.ui.ServicioActualUI;
 import com.example.marti.amimedicos.ui.ServiciosAsignadosUI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
         Fragment fg = LogInUI.newInstance();
         //Fragment fg = LogInFragment.newInstance();
         // adding fragment to relative layout by using layout id
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
     }
 
     @Override
@@ -360,5 +361,31 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
         double tt = Math.acos(t1 + t2 + t3);
 
         return 6366000 * tt;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        Log.i("count :",String.valueOf(getSupportFragmentManager().getBackStackEntryCount()));
+
+        Fragment actualFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if(getSupportFragmentManager().getBackStackEntryCount()>1) {
+
+            if(actualFragment instanceof ServiciosAsignadosUI || actualFragment instanceof ServicioActualUI){
+                //
+            }else{
+
+                    getSupportFragmentManager().popBackStack();
+
+            }
+
+
+        }else{
+            this.finish();
+        }
+
+
     }
 }

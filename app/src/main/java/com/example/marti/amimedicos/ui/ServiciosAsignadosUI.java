@@ -6,12 +6,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,6 +47,7 @@ public class ServiciosAsignadosUI extends Fragment {
     TextView textViewnoservice,nombrecli,telcli;
     Button cuadradoBtn;
     CardView cardView;
+    ImageView salir;
 
     GsonBuilder gsonBuilder;
     Gson gson;
@@ -73,6 +76,7 @@ public class ServiciosAsignadosUI extends Fragment {
         cardView = view.findViewById(R.id.cardservice);
         nombrecli = view.findViewById(R.id.nombrecli);
         telcli = view.findViewById(R.id.telcli);
+        salir = view.findViewById(R.id.salir);
 
        /* if(LogInUI.noservice==1){
           textViewnoservice.setVisibility(View.VISIBLE);
@@ -89,13 +93,13 @@ public class ServiciosAsignadosUI extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        ((NotificationM)getActivity()).localNotification();
+        //((NotificationM)getActivity()).localNotification();
 
 
         cuadradoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((NotificationM)getActivity()).popupInternalNotification();
+                //((NotificationM)getActivity()).popupInternalNotification();
             }
         });
 
@@ -105,6 +109,14 @@ public class ServiciosAsignadosUI extends Fragment {
                 Fragment fg = DetalleServicioAsignado.newInstance();
                 getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
             }
+        });
+
+        salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Fragment fg2 = LogInUI.newInstance();
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg2).addToBackStack(null).commit();            }
         });
         super.onViewCreated(view, savedInstanceState);
     }
