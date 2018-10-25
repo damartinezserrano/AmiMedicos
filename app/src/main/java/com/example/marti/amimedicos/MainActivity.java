@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -30,6 +31,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.marti.amimedicos.estructura.EstructuraLogin;
+import com.example.marti.amimedicos.estructura.Identificacion;
 import com.example.marti.amimedicos.estructura.Ubicacion;
 import com.example.marti.amimedicos.estructura.ValidarTriageBody;
 import com.example.marti.amimedicos.interfaces.notification.NotificationM;
@@ -37,6 +40,7 @@ import com.example.marti.amimedicos.settings.Constant;
 import com.example.marti.amimedicos.ui.LogInUI;
 import com.example.marti.amimedicos.ui.ServicioActualUI;
 import com.example.marti.amimedicos.ui.ServiciosAsignadosUI;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -63,13 +67,32 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
     RequestQueue requestQueue;
     Ubicacion ubicacion;
 
+    SharedPreferences sharedPref;
+    Identificacion identificacion;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.MainAppThemeWithNoBar);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPref = getSharedPreferences(Constant.PREFERENCE_LOGIN, Context.MODE_PRIVATE);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SYSTEM_ALERT_WINDOW}, 1);
-        addDynamicFragment();
+        if(sharedPref.getString(Constant.TOKEN_FIREBASE_PREF, "").equals("")){
+          Constant.TOKEN_FB = FirebaseInstanceId.getInstance().getToken();
+        }
+
+        if(!sharedPref.getString(Constant.TOKEN_FIREBASE_PREF, "").equals("")){
+            String campoIden = sharedPref.getString(Constant.USER_PREF,"");
+            String campoContra = sharedPref.getString(Constant.PASS_PREF,"");
+            Log.i("credencialprefs","Changed :"+sharedPref.getString(Constant.TOKEN_FIREBASE_PREF, "")+" | "+campoIden+" | "+campoContra);
+            postLogin(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_GENERAL + Constant.ENDPOINT_LOGIN, campoIden, campoContra);
+
+        }else{
+
+            addDynamicFragment();
+
+        }
+
 
         if (getIntent().getIntExtra("notif", 0) == 1) {
             Fragment fg = ServiciosAsignadosUI.newInstance();
@@ -363,6 +386,79 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
         return 6366000 * tt;
     }
 
+    public void postLogin(String URL, String id, String contra) {
+
+
+
+        requestQueue = getRequestQueue();
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, loginBodyJSON(id,contra,sharedPref.getString(Constant.TOKEN_FIREBASE_PREF,"")), //hacemos la peticion post
+                response -> {
+
+                    Log.i("LogInFragment", "Se ha realizado el user post con exito");
+                    parseLogInResponse(response);
+
+                }, error -> {
+            Log.i("LogInPrefs", "Error");
+            //parseLogInError(error);
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError { //autorizamos basic
+                Map<String, String> headers = new HashMap<>();
+                String auth = getResources().getString(R.string.auth);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+                return headers;
+            }
+
+        };
+
+        requestQueue.add(request);
+    }
+
+    public JSONObject loginBodyJSON(String id, String contra, String tokenfb) { //construimos el json
+        //primero json device
+        String loginBody="";
+        JSONObject jsonObject=null;
+
+        identificacion = new Identificacion();
+        identificacion.setUsuario(id); //72000325  22540125
+        identificacion.setContrasena(contra); //isabella  jannyscaicedoa
+        identificacion.setToken_movil(tokenfb);
+
+        gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+
+        loginBody = gson.toJson(identificacion);
+        Log.i("loginRbody",loginBody);
+
+        try {
+            jsonObject = new JSONObject(loginBody);
+            Log.i("jsonObject",jsonObject.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+    public void parseLogInResponse(JSONObject response) {
+
+        Gson gson3 = new Gson();
+        EstructuraLogin estructuraLogin = gson3.fromJson(response.toString(),EstructuraLogin.class);
+
+
+        Constant.ID = sharedPref.getString(Constant.USER_PREF,"");
+        Constant.TOKEN = estructuraLogin.getToken();
+
+
+        Fragment fg = ServiciosAsignadosUI.newInstance();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg).addToBackStack(null).commit();
+
+
+    }
 
     @Override
     public void onBackPressed() {

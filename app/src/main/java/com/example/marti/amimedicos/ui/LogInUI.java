@@ -1,6 +1,8 @@
 package com.example.marti.amimedicos.ui;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -55,6 +57,8 @@ public class LogInUI extends Fragment {
 
     Identificacion identificacion;
 
+    SharedPreferences sharedPref;
+
     public LogInUI() {
         // Required empty public constructor
     }
@@ -70,7 +74,7 @@ public class LogInUI extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_log_in_ui, container, false);
-
+        sharedPref = getActivity().getSharedPreferences(Constant.PREFERENCE_LOGIN, Context.MODE_PRIVATE);
         idenTView = view.findViewById(R.id.identificacion);
         contrasenaTView = view.findViewById(R.id.contrasena);
         Drawable drIden = getResources().getDrawable(R.drawable.icono_usuario2);
@@ -80,6 +84,12 @@ public class LogInUI extends Fragment {
         Drawable drContra = getResources().getDrawable(R.drawable.candado);
         drContra.setBounds(new Rect(0, 0, 20, 20));
         contrasenaTView.setCompoundDrawables(drContra,null,null,null);
+
+        /*if(!sharedPref.getString(Constant.TOKEN_FIREBASE_PREF, "").equals("")){
+            campoIden = sharedPref.getString(Constant.USER_PREF,"");
+            campoContra = sharedPref.getString(Constant.PASS_PREF,"");
+            postLogin(Constant.HTTP_DOMAIN + Constant.APP_PATH + Constant.ENDPOINT_GENERAL + Constant.ENDPOINT_LOGIN, campoIden, campoContra);
+        }*/
 
         loginBtn=view.findViewById(R.id.ingresar);
         loginBtn.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +178,7 @@ public class LogInUI extends Fragment {
         identificacion = new Identificacion();
         identificacion.setUsuario(id); //72000325  22540125
         identificacion.setContrasena(contra); //isabella  jannyscaicedoa
-        identificacion.setToken_movil("123");
+        identificacion.setToken_movil(Constant.TOKEN_FB);
 
         gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
@@ -192,8 +202,13 @@ public class LogInUI extends Fragment {
         Gson gson3 = new Gson();
         EstructuraLogin estructuraLogin = gson3.fromJson(response.toString(),EstructuraLogin.class);
 
+
         Constant.ID = idenTView.getText().toString();
         Constant.TOKEN = estructuraLogin.getToken();
+
+        sharedPref.edit().putString(Constant.TOKEN_FIREBASE_PREF,Constant.TOKEN_FB).apply();
+        sharedPref.edit().putString(Constant.USER_PREF,campoIden).apply();
+        sharedPref.edit().putString(Constant.PASS_PREF,campoContra).apply();
       //  Constant.slistaContratos = estructuraLogin.getLista();
 
         Fragment fg = ServiciosAsignadosUI.newInstance();

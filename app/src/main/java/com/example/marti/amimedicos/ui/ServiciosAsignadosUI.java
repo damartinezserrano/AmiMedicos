@@ -1,6 +1,8 @@
 package com.example.marti.amimedicos.ui;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -54,6 +56,8 @@ public class ServiciosAsignadosUI extends Fragment {
 
     RequestQueue requestQueue;
 
+    SharedPreferences sharedPref;
+
     public ServiciosAsignadosUI() {
         // Required empty public constructor
     }
@@ -69,6 +73,9 @@ public class ServiciosAsignadosUI extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_servicios_asignados_ui, container, false);
+
+        sharedPref = getActivity().getSharedPreferences(Constant.PREFERENCE_LOGIN, Context.MODE_PRIVATE);
+
 
         relativeLayoutservicios = view.findViewById(R.id.servicios);
         textViewnoservice = view.findViewById(R.id.noservicio);
@@ -114,6 +121,7 @@ public class ServiciosAsignadosUI extends Fragment {
         salir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sharedPref.edit().clear().apply();
                 getActivity().getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 Fragment fg2 = LogInUI.newInstance();
                 getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, fg2).addToBackStack(null).commit();            }

@@ -8,6 +8,8 @@ public class Constant {
 
     public static String TOKEN = "";
 
+    public static String TOKEN_FB = "";
+
     public static String ID = "";
 
     public static  String cod_detalle_serv="";
@@ -50,7 +52,11 @@ public class Constant {
 
     public static  String END_POINT_POSITION="/position";
 
+    // Preferencias
 
-
+    public static final String PREFERENCE_LOGIN = "inicio_de_sesion";
+    public final static String TOKEN_FIREBASE_PREF = "token_fb";
+    public final static String USER_PREF = "usuario";
+    public final static String PASS_PREF = "password";
 
 }

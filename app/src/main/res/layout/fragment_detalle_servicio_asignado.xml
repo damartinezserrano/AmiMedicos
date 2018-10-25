@@ -64,14 +64,17 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:minWidth="200dp"
-                android:layout_height="@dimen/margin30dp"
-                style="@style/CuadradoRojoBordesBlancos"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/margin5dp"
-                android:textColor="@color/white"/>
+
+        <TextView
+            style="@style/CuadradoRojoBordesBlancos"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:minWidth="200dp"
+            android:text="Cra. 51B #59B-91"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -80,6 +83,8 @@
                 style="@style/CuadradoRojoBordesBlancos"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/margin5dp"
+                android:text="Calle 56 #60-21"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 />
     </RelativeLayout>
