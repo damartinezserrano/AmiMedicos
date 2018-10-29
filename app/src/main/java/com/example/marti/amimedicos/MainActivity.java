@@ -31,6 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.marti.amimedicos.estructura.Detalle;
 import com.example.marti.amimedicos.estructura.EstructuraLogin;
 import com.example.marti.amimedicos.estructura.Identificacion;
 import com.example.marti.amimedicos.estructura.Ubicacion;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
 
     SharedPreferences sharedPref;
     Identificacion identificacion;
+    Detalle detalle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
