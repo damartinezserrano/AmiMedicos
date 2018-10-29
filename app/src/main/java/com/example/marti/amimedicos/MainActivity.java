@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NotificationM {
 
     SharedPreferences sharedPref;
     Identificacion identificacion;
-    Detalle detalle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
